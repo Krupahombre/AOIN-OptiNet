@@ -2,9 +2,9 @@ import os
 
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
-from pathlib import Path
 
-data_path = Path('./data')
+from src import data_path
+
 
 def load_data(batch_size=64):
     if not os.path.exists(data_path):

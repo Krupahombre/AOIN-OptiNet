@@ -9,13 +9,20 @@ def run_evolutionary_optimization(population, train_loader, test_loader, epochs,
         print(f"\nTraining individual {i + 1}/{len(population)}...")
 
         layers_num, neurons_num = individual.get_structure_info()
+        layers_info = individual.get_layers_info()
         train_time = train_network(individual, train_loader, device, epochs)
         test_loss, test_accuracy = test_network(individual, test_loader, device)
 
+        individual.set_accuracy(test_accuracy)
+        individual.set_train_time(train_time)
+
         print(f"  Network structure: {layers_num} layers, neurons in layers: {neurons_num}")
+        print(f"  Layers info: {layers_info}")
         print(f"  Training time: {train_time:.2f} seconds")
         print(f"  Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.2f}%")
         print("-" * 50)
+
+    return population
 
 if __name__ == "__main__":
     batch_size = 64
@@ -31,4 +38,4 @@ if __name__ == "__main__":
 
     print_population_info(population)
 
-    run_evolutionary_optimization(population, train_loader, test_loader, epochs, device)
+    trained_population = run_evolutionary_optimization(population, train_loader, test_loader, epochs, device)
