@@ -4,6 +4,9 @@ class CustomNeuralNetwork(nn.Module):
     def __init__(self, structure):
         super().__init__()
         self.flatten = nn.Flatten()
+        self.structure = structure
+        self.train_time = 0
+        self.accuracy = 0
         layers = []
         input_size = 28 * 28
 
@@ -19,3 +22,6 @@ class CustomNeuralNetwork(nn.Module):
         x = self.flatten(x)
         logits = self.linear_relu_stack(x)
         return logits
+
+    def get_structure_info(self):
+        return len(self.structure), self.structure
