@@ -1,3 +1,5 @@
+import os
+
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 from pathlib import Path
@@ -5,6 +7,9 @@ from pathlib import Path
 data_path = Path('../data')
 
 def load_data(batch_size=64):
+    if not os.path.exists(data_path):
+        os.makedirs(data_path)
+
     transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize((0.5,), (0.5,))
