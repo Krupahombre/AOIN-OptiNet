@@ -7,16 +7,16 @@ class CustomNeuralNetwork(nn.Module):
         self.structure = structure
         self.train_time = 0
         self.accuracy = 0
+        self.input_layer = 28 * 28
+        self.output_layer = 10
         layers = []
-        input_layer = 28 * 28
-        output_layer = 10
 
         for neurons in structure:
-            layers.append(nn.Linear(input_layer, neurons))
+            layers.append(nn.Linear(self.input_layer, neurons))
             layers.append(nn.ReLU())
-            input_layer = neurons
+            self.input_layer = neurons
 
-        layers.append(nn.Linear(input_layer, output_layer))
+        layers.append(nn.Linear(self.input_layer, self.output_layer))
         self.linear_relu_stack = nn.Sequential(*layers)
 
     def forward(self, x):
