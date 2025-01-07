@@ -6,7 +6,8 @@ from src.utils import get_available_device, generate_random_structure, print_pop
 
 def run_evolutionary_optimization(population, train_loader, test_loader, epochs, device):
     for i, individual in enumerate(population):
-        print(f"\nTraining individual {i + 1}/{len(population)}...")
+        print("-" * 50)
+        print(f"\n  Training individual {i + 1}/{len(population)}...")
 
         layers_num, neurons_num = individual.get_structure_info()
         layers_info = individual.get_layers_info()
@@ -23,6 +24,7 @@ def run_evolutionary_optimization(population, train_loader, test_loader, epochs,
         print("-" * 50)
 
     return population
+
 
 if __name__ == "__main__":
     batch_size = 64
