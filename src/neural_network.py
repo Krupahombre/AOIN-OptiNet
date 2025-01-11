@@ -45,3 +45,7 @@ class CustomNeuralNetwork(nn.Module):
 
     def get_layers_info(self):
         return self.stats.get_summary()
+
+    def get_num_parameters(self):
+        total_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
+        return total_params
