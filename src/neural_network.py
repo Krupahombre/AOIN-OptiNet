@@ -8,16 +8,17 @@ class CustomNeuralNetwork(nn.Module):
         super().__init__()
         self.flatten = nn.Flatten()
         self.input_layer = 28 * 28
+        input_layer_copy = self.input_layer
         self.output_layer = 10
         self.structure = structure
 
         layers = []
         for neurons in structure:
-            layers.append(nn.Linear(self.input_layer, neurons))
+            layers.append(nn.Linear(input_layer_copy, neurons))
             layers.append(nn.ReLU())
-            self.input_layer = neurons
+            input_layer_copy = neurons
 
-        layers.append(nn.Linear(self.input_layer, self.output_layer))
+        layers.append(nn.Linear(input_layer_copy, self.output_layer))
         self.linear_relu_stack = nn.Sequential(*layers)
 
         self.stats = NeuralNetworkStats(structure, 28 * 28, 10)
