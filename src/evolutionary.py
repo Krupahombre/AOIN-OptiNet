@@ -1,6 +1,7 @@
 import random
 
 from src.neural_network_utils import train_network, test_network
+from utils import save_to_csv
 
 
 def evaluate(individual, train_loader, test_loader, device, epochs):
@@ -21,10 +22,23 @@ def crossover(ind1, ind2):
     return [ind1, ind2]
 
 
-def mutate(individual):
-    if random.random() < 0.2:
-        layer_idx = random.randint(0, len(individual.structure) - 1)
-        individual.structure[layer_idx] = random.randint(16, 128)
+def mutate(individual, mutation_type):
+    if mutation_type == "layer_size":
+        if random.random() < 0.2:
+            layer_idx = random.randint(0, len(individual.structure) - 1)
+            individual.structure[layer_idx] = random.randint(16, 128)
+
+    elif mutation_type == "structure_change":
+        if random.random() < 0.2:
+            if random.random() < 0.5 and len(individual.structure) > 1:
+                del individual.structure[random.randint(0, len(individual.structure) - 1)]
+            else:
+                individual.structure.append(random.randint(16, 128))
+
+    elif mutation_type == "add_layer":
+        if random.random() < 0.2:
+            individual.structure.append(random.randint(16, 128))
+
     return individual,
 
 
@@ -34,7 +48,8 @@ def tournament_selection(population, n=3):
     return tournament[0]
 
 
-def run_evolutionary_optimization(population, train_loader, test_loader, epochs, device, generations):
+def run_evolutionary_optimization(population, train_loader, test_loader, epochs, device, generations,
+                                  mutation_type, csv_path="result_mutation.csv"):
     for gen in range(generations):
         print(f"Generation {gen + 1}/{generations}")
         for i, individual in enumerate(population):
@@ -42,6 +57,10 @@ def run_evolutionary_optimization(population, train_loader, test_loader, epochs,
             evaluate(individual, train_loader, test_loader, device, epochs)
 
         population.sort(key=lambda x: x.get_accuracy(), reverse=True)
+
+        best_individual = population[0]
+
+        save_to_csv(csv_path, gen + 1, best_individual, mutation_type)
 
         best_individuals = population[:2]
         new_population = best_individuals[:]
@@ -51,7 +70,7 @@ def run_evolutionary_optimization(population, train_loader, test_loader, epochs,
             parent2 = tournament_selection(population)
             offspring = crossover(parent1, parent2)
             for child in offspring:
-                mutate(child)
+                mutate(child, mutation_type)
                 new_population.append(child)
 
                 if len(new_population) >= len(population):

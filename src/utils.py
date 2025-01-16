@@ -1,4 +1,7 @@
 import random
+import csv
+import os
+from src import data_path
 
 import torch
 
@@ -22,3 +25,28 @@ def print_population_info(population):
         print(f"  - Network structure: {layers_num} layers")
         print(f"  - Neurons in layers: {neurons_num}")
         print("-" * 30)
+
+def save_to_csv(file_path, generation, best_individual, mutation_type):
+    file_path = os.path.join(data_path, file_path)
+    fieldnames = [
+        "Generation", "Mutation Type", "Structure", "Number of Layers",
+        "Input layer", "Output layer", "Train Time", "Accuracy"
+    ]
+
+    if not os.path.exists(file_path):
+        with open(file_path, mode="w", newline="") as file:
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+            writer.writeheader()
+
+    with open(file_path, mode="a", newline="") as file:
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writerow({
+            "Generation": generation,
+            "Mutation Type": mutation_type,
+            "Structure": best_individual.structure,
+            "Number of Layers": len(best_individual.structure),
+            "Input layer": best_individual.input_layer,
+            "Output layer": best_individual.output_layer,
+            "Train Time": best_individual.get_train_time(),
+            "Accuracy": best_individual.get_accuracy()
+        })

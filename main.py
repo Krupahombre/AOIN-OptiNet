@@ -9,6 +9,7 @@ if __name__ == "__main__":
     population_size = 3
     generations = 5
     epochs = 3
+    mutation_type = "structure_change"
     train_loader, test_loader = load_data(batch_size)
 
     device = get_available_device()
@@ -19,5 +20,5 @@ if __name__ == "__main__":
 
     print("Starting Evolutionary Optimization...\n")
 
-    best_individual = run_evolutionary_optimization(population, train_loader, test_loader, epochs, device, generations)
+    best_individual = run_evolutionary_optimization(population, train_loader, test_loader, epochs, device, generations, mutation_type)
     print(f"\nBest Individual: {best_individual.stats.get_summary()}")
