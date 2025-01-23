@@ -1,7 +1,7 @@
-import random
-
+from src.evolutionary_operator_manager import EvolutionaryOperatorManager
+from src.evolutionary_operators import mutate
 from src.neural_network_utils import train_network, test_network
-from utils import save_to_csv
+from src.utils import save_to_csv
 
 
 def evaluate(individual, train_loader, test_loader, device, epochs):
@@ -15,41 +15,11 @@ def evaluate(individual, train_loader, test_loader, device, epochs):
     return test_accuracy, train_time, num_params
 
 
-def crossover(ind1, ind2):
-    if random.random() < 0.5 and (len(ind1.structure) > 1 and len(ind2.structure) > 1):
-        cxpoint = random.randint(1, len(ind1.structure) - 1)
-        ind1.structure[cxpoint:], ind2.structure[cxpoint:] = ind2.structure[cxpoint:], ind1.structure[cxpoint:]
-    return [ind1, ind2]
+def run_evolutionary_optimization(manager: EvolutionaryOperatorManager, population, train_loader, test_loader, epochs, device, generations,
+                                  selection_type, crossover_type, mutation_type, csv_path="result_mutation.csv"):
+    selection_method = manager.get("selection", selection_type)
+    crossover_method = manager.get("crossover", crossover_type)
 
-
-def mutate(individual, mutation_type):
-    if mutation_type == "layer_size":
-        if random.random() < 0.2:
-            layer_idx = random.randint(0, len(individual.structure) - 1)
-            individual.structure[layer_idx] = random.randint(16, 128)
-
-    elif mutation_type == "structure_change":
-        if random.random() < 0.2:
-            if random.random() < 0.5 and len(individual.structure) > 1:
-                del individual.structure[random.randint(0, len(individual.structure) - 1)]
-            else:
-                individual.structure.append(random.randint(16, 128))
-
-    elif mutation_type == "add_layer":
-        if random.random() < 0.2:
-            individual.structure.append(random.randint(16, 128))
-
-    return individual,
-
-
-def tournament_selection(population, n=3):
-    tournament = random.sample(population, n)
-    tournament.sort(key=lambda x: x.get_accuracy(), reverse=True)
-    return tournament[0]
-
-
-def run_evolutionary_optimization(population, train_loader, test_loader, epochs, device, generations,
-                                  mutation_type, csv_path="result_mutation.csv"):
     for gen in range(generations):
         print(f"Generation {gen + 1}/{generations}")
         for i, individual in enumerate(population):
@@ -66,9 +36,9 @@ def run_evolutionary_optimization(population, train_loader, test_loader, epochs,
         new_population = best_individuals[:]
 
         while len(new_population) < len(population):
-            parent1 = tournament_selection(population)
-            parent2 = tournament_selection(population)
-            offspring = crossover(parent1, parent2)
+            parent1 = selection_method(population)
+            parent2 = selection_method(population)
+            offspring = crossover_method(parent1, parent2)
             for child in offspring:
                 mutate(child, mutation_type)
                 new_population.append(child)
