@@ -37,9 +37,6 @@ def train_network(network, train_loader, device, epochs):
 
                 batch_progress.set_postfix(loss=running_loss / (batch + 1), accuracy=(correct_predictions / total_samples) * 100)
 
-            # epoch_loss = running_loss / len(train_loader)
-            # epoch_accuracy = (correct_predictions / total_samples) * 100
-
     end_time = time.time()
     training_duration = end_time - start_time
 

@@ -26,11 +26,11 @@ def print_population_info(population):
         print(f"  - Neurons in layers: {neurons_num}")
         print("-" * 30)
 
-def save_to_csv(file_path, generation, best_individual, mutation_type):
-    file_path = os.path.join(data_path, file_path)
+def save_to_csv(file_name, generation, best_individual, selection_type, crossover_type, mutation_type):
+    file_path = os.path.join(data_path, file_name)
     fieldnames = [
-        "Generation", "Mutation Type", "Structure", "Number of Layers",
-        "Input layer", "Output layer", "Train Time", "Accuracy"
+        "Generation", "Selection Type", "Crossover Type", "Mutation Type", "Structure",
+        "Number of Layers", "Input Layer", "Output Layer", "Train Time", "Accuracy"
     ]
 
     if not os.path.exists(file_path):
@@ -42,11 +42,13 @@ def save_to_csv(file_path, generation, best_individual, mutation_type):
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writerow({
             "Generation": generation,
+            "Selection Type": selection_type,
+            "Crossover Type": crossover_type,
             "Mutation Type": mutation_type,
             "Structure": best_individual.structure,
             "Number of Layers": len(best_individual.structure),
-            "Input layer": best_individual.input_layer,
-            "Output layer": best_individual.output_layer,
+            "Input Layer": best_individual.input_layer,
+            "Output Layer": best_individual.output_layer,
             "Train Time": best_individual.get_train_time(),
             "Accuracy": best_individual.get_accuracy()
         })

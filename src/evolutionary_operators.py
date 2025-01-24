@@ -50,21 +50,19 @@ def unified_crossover(ind1, ind2):
 
 
 # MUTATION
-def mutate(ind, mutation_type):
-    if mutation_type == "layer_size":
-        if random.random() < 0.2:
-            layer_idx = random.randint(0, len(ind.structure) - 1)
-            ind.structure[layer_idx] = random.randint(16, 128)
+def neuron_change_mutation(ind, mutation_prob = 0.2):
+    if random.random() < mutation_prob:
+        layer_idx = random.randint(0, len(ind.structure) - 1)
+        ind.structure[layer_idx] = random.randint(16, 128)
 
-    elif mutation_type == "structure_change":
-        if random.random() < 0.2:
-            if random.random() < 0.5 and len(ind.structure) > 1:
-                del ind.structure[random.randint(0, len(ind.structure) - 1)]
-            else:
-                ind.structure.append(random.randint(16, 128))
+    return ind
 
-    elif mutation_type == "add_layer":
-        if random.random() < 0.2:
+
+def structure_change_mutation(ind, mutation_prob = 0.2):
+    if random.random() < mutation_prob:
+        if random.random() < 0.5 and len(ind.structure) > 1:
+            del ind.structure[random.randint(0, len(ind.structure) - 1)]
+        else:
             ind.structure.append(random.randint(16, 128))
 
-    return ind,
+    return ind
