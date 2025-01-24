@@ -1,44 +1,41 @@
-from src.data_loader import load_data
+from src.evolutionary import run_evolutionary_optimization
+from src.evolutionary_operator_loader import EvolutionaryOperatorLoader
+from src.evolutionary_operator_manager import EvolutionaryOperatorManager
+from src.utils import get_available_device, generate_random_structure
 from src.neural_network import CustomNeuralNetwork
-from src.neural_network_utils import train_network, test_network
-from src.utils import get_available_device, generate_random_structure, print_population_info
-
-
-def run_evolutionary_optimization(population, train_loader, test_loader, epochs, device):
-    for i, individual in enumerate(population):
-        print("-" * 50)
-        print(f"\n  Training individual {i + 1}/{len(population)}...")
-
-        layers_num, neurons_num = individual.get_structure_info()
-        train_time = train_network(individual, train_loader, device, epochs)
-        test_loss, test_accuracy = test_network(individual, test_loader, device)
-
-        individual.set_accuracy(test_accuracy)
-        individual.set_train_time(round(train_time, 2))
-
-        layers_info = individual.get_layers_info()
-
-        print(f"  Network structure: {layers_num} layers, neurons in layers: {neurons_num}")
-        print(f"  Layers info: {layers_info}")
-        print(f"  Training time: {train_time:.2f} seconds")
-        print(f"  Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.2f}%")
-        print("-" * 50)
-
-    return population
+from src.data_loader import load_data
 
 
 if __name__ == "__main__":
     batch_size = 64
-    populations_size = 5
-    epochs = 3
+    population_size = 3
+    generations = 5
+    epochs = 1
+    selection_type = "tournament"
+    crossover_type = "single_point"
+    mutation_type = "structure_change"
     train_loader, test_loader = load_data(batch_size)
 
     device = get_available_device()
+    manager = EvolutionaryOperatorManager()
+    EvolutionaryOperatorLoader.load_operators(manager)
 
     population = [
-        CustomNeuralNetwork(generate_random_structure()) for _ in range(populations_size)
+        CustomNeuralNetwork(generate_random_structure()) for _ in range(population_size)
     ]
 
-    print_population_info(population)
+    print("Starting Evolutionary Optimization...\n")
 
-    trained_population = run_evolutionary_optimization(population, train_loader, test_loader, epochs, device)
+    best_individual = run_evolutionary_optimization(
+        manager,
+        population,
+        train_loader,
+        test_loader,
+        epochs,
+        device,
+        generations,
+        selection_type,
+        crossover_type,
+        mutation_type
+    )
+    print(f"\nBest Individual: {best_individual.stats.get_summary()}")
