@@ -17,7 +17,7 @@ def evaluate(individual, train_loader, test_loader, device, epochs):
 
 
 def run_evolutionary_optimization(manager: EvolutionaryOperatorManager, population, train_loader, test_loader, epochs, device, generations,
-                                  selection_type, crossover_type, mutation_type):
+                                  selection_type, crossover_type, mutation_type, csv_path="results.csv"):
     selection_method = manager.get("selection", selection_type)
     crossover_method = manager.get("crossover", crossover_type)
     mutation_method = manager.get("mutation", mutation_type)
@@ -33,7 +33,7 @@ def run_evolutionary_optimization(manager: EvolutionaryOperatorManager, populati
 
         best_individual = population[0]
 
-        save_to_csv("results.csv", gen + 1, best_individual, selection_type, crossover_type, mutation_type)
+        save_to_csv(csv_path, gen + 1, best_individual, selection_type, crossover_type, mutation_type)
 
         best_individuals = population[:2]
         new_population = best_individuals[:]

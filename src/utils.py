@@ -32,7 +32,7 @@ def save_to_csv(file_name, generation, best_individual, selection_type, crossove
         "Generation", "Selection Type", "Crossover Type", "Mutation Type", "Structure",
         "Number of Layers", "Input Layer", "Output Layer", "Train Time", "Accuracy"
     ]
-
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
     if not os.path.exists(file_path):
         with open(file_path, mode="w", newline="") as file:
             writer = csv.DictWriter(file, fieldnames=fieldnames)

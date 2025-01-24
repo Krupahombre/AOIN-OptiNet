@@ -1,0 +1,11 @@
+{
+    "batch_size": 64,
+    "population_size": 3,
+    "generations": 2,
+    "epochs": 1,
+    "runs": 3,
+    "selection_type": "tournament",
+    "crossover_type": "single_point",
+    "mutation_type": "structure_change"
+  }
+  
