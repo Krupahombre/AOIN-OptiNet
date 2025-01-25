@@ -11,6 +11,10 @@ if __name__ == "__main__":
     population_size = 3
     generations = 5
     epochs = 1
+    crossover_prob = 0.5
+    mutation_prob = 0.2
+    tournament_size = 3
+    max_fitness_count = 100
     selection_type = "tournament"
     crossover_type = "single_point"
     mutation_type = "structure_change"
@@ -28,6 +32,7 @@ if __name__ == "__main__":
 
     best_individual = run_evolutionary_optimization(
         manager,
+        max_fitness_count,
         population,
         train_loader,
         test_loader,
@@ -36,6 +41,9 @@ if __name__ == "__main__":
         generations,
         selection_type,
         crossover_type,
-        mutation_type
+        mutation_type,
+        crossover_prob,
+        mutation_prob,
+        tournament_size
     )
     print(f"\nBest Individual: {best_individual.stats.get_summary()}")

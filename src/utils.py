@@ -26,10 +26,10 @@ def print_population_info(population):
         print(f"  - Neurons in layers: {neurons_num}")
         print("-" * 30)
 
-def save_to_csv(file_name, generation, best_individual, selection_type, crossover_type, mutation_type):
+def save_to_csv(file_name, max_fitness_count, generation, population_size, best_individual, selection_type, tournament_size, crossover_type, crossover_prob, mutation_type, mutation_prob):
     file_path = os.path.join(data_path, file_name)
     fieldnames = [
-        "Generation", "Selection Type", "Crossover Type", "Mutation Type", "Structure",
+        "Max fitness Count", "Generation Number", "Population Size", "Selection Type", "Tournament Size", "Crossover Type", "Crossover Probability", "Mutation Type", "Mutation Probability", "Structure",
         "Number of Layers", "Input Layer", "Output Layer", "Train Time", "Accuracy"
     ]
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
@@ -38,17 +38,28 @@ def save_to_csv(file_name, generation, best_individual, selection_type, crossove
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader()
 
+
+    formatted_crossover_prob = round(crossover_prob, 3)
+    formatted_mutation_prob = round(mutation_prob, 3)
+    formatted_train_time = round(best_individual.get_train_time(), 4)
+    formatted_accuracy = round(best_individual.get_accuracy(), 4)
+
     with open(file_path, mode="a", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writerow({
-            "Generation": generation,
+            "Max fitness Count": 100,
+            "Generation Number": generation,
+            "Population Size": population_size,
             "Selection Type": selection_type,
+            "Tournament Size": tournament_size,
             "Crossover Type": crossover_type,
+            "Crossover Probability": formatted_crossover_prob,
             "Mutation Type": mutation_type,
+            "Mutation Probability": formatted_mutation_prob,
             "Structure": best_individual.structure,
             "Number of Layers": len(best_individual.structure),
             "Input Layer": best_individual.input_layer,
             "Output Layer": best_individual.output_layer,
             "Train Time": best_individual.get_train_time(),
-            "Accuracy": best_individual.get_accuracy()
+            "Accuracy": formatted_accuracy
         })
