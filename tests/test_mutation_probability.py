@@ -7,8 +7,8 @@ from src.data_loader import load_data
 import os
 from src.evolutionary_parameters_manager import EvolutionaryParametersManager
 
-def test_epochs():
-    csv_dir="epochs"
+def test_mutation_probability():
+    csv_dir="mutation_probability"
 
     params_manager = EvolutionaryParametersManager()
 
@@ -16,7 +16,7 @@ def test_epochs():
 
     runs = params_manager.get("runs")
 
-    epochs_num = [1, 2, 3]
+    mutation_probabilities = [0.05, 0.2, 0.5]
 
     os.makedirs(csv_dir, exist_ok=True)
     
@@ -25,10 +25,10 @@ def test_epochs():
     manager = EvolutionaryOperatorManager()
     EvolutionaryOperatorLoader.load_operators(manager)
 
-    for epochs in epochs_num:
-        params_manager.set("epochs", epochs)
+    for mutation_probability in mutation_probabilities:
+        params_manager.set("mutation_prob", mutation_probability)
         for i in range(runs):
-            print(f'executing {i + 1} run for {epochs}')
+            print(f'executing {i + 1} run for {mutation_probability}')
             population = [
                 CustomNeuralNetwork(generate_random_structure()) for _ in range(params_manager.get("population_size"))
             ]
@@ -48,5 +48,5 @@ def test_epochs():
                 params_manager.get("crossover_prob"),
                 params_manager.get("mutation_prob"),
                 params_manager.get("tournament_size"),
-                csv_path=os.path.join(csv_dir, f"{epochs}.csv")
+                csv_path=os.path.join(csv_dir, f"{mutation_probability}.csv")
             )

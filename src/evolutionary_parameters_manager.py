@@ -11,7 +11,8 @@ class EvolutionaryParametersManager:
             "max_fitness_count": 100,
             "selection_type": "tournament",
             "crossover_type": "single_point",
-            "mutation_type": "structure_change"
+            "mutation_type": "structure_change",
+            "runs": 3
         }
 
         self.parameters.update(kwargs)

@@ -4,6 +4,7 @@ import datetime
 from src.evolutionary_operator_manager import EvolutionaryOperatorManager
 from src.neural_network_utils import train_network, test_network
 from src.utils import save_to_csv
+from src.evolutionary_parameters_manager import EvolutionaryParametersManager
 
 
 def evaluate(individual, train_loader, test_loader, device, epochs):
