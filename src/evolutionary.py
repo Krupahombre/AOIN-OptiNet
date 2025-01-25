@@ -21,11 +21,11 @@ def run_evolutionary_optimization(manager: EvolutionaryOperatorManager, max_fitn
                                   epochs, device, generations,
                                   selection_type, crossover_type, mutation_type,
                                   crossover_prob, mutation_prob, tournament_size,
-                                  csv_name="results"):
+                                  csv_path="results"):
     selection_method = manager.get("selection", selection_type)
     crossover_method = manager.get("crossover", crossover_type)
     mutation_method = manager.get("mutation", mutation_type)
-    csv_path = f"{csv_name}_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.csv"
+    csv_path = f"{csv_path}_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.csv"
 
     for gen in range(generations):
         print(f"\nGeneration {gen + 1}/{generations}")
