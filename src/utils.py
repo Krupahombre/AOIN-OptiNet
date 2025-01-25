@@ -26,10 +26,10 @@ def print_population_info(population):
         print(f"  - Neurons in layers: {neurons_num}")
         print("-" * 30)
 
-def save_to_csv(file_name, max_fitness_count, generation, population_size, best_individual, selection_type, tournament_size, crossover_type, crossover_prob, mutation_type, mutation_prob):
+def save_to_csv(file_name, max_fitness_count, generation, epochs, population_size, best_individual, selection_type, tournament_size, crossover_type, crossover_prob, mutation_type, mutation_prob):
     file_path = os.path.join(data_path, file_name)
     fieldnames = [
-        "Max fitness Count", "Generation Number", "Population Size", "Selection Type", "Tournament Size", "Crossover Type", "Crossover Probability", "Mutation Type", "Mutation Probability", "Structure",
+        "Max fitness Count", "Generation Number", "Epochs", "Population Size", "Selection Type", "Tournament Size", "Crossover Type", "Crossover Probability", "Mutation Type", "Mutation Probability", "Structure",
         "Number of Layers", "Input Layer", "Output Layer", "Train Time", "Accuracy"
     ]
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
@@ -49,6 +49,7 @@ def save_to_csv(file_name, max_fitness_count, generation, population_size, best_
         writer.writerow({
             "Max fitness Count": 100,
             "Generation Number": generation,
+            "Epochs": epochs,
             "Population Size": population_size,
             "Selection Type": selection_type,
             "Tournament Size": tournament_size,

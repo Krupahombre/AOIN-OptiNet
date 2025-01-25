@@ -41,7 +41,7 @@ def run_evolutionary_optimization(manager: EvolutionaryOperatorManager, max_fitn
 
             best_individual = population[0]
 
-            save_to_csv(csv_path, max_fitness_count, gen + 1, len(population), best_individual, selection_type, tournament_size, crossover_type,
+            save_to_csv(csv_path, max_fitness_count, gen + 1, epochs, len(population), best_individual, selection_type, tournament_size, crossover_type,
                         crossover_prob, mutation_type, mutation_prob)
 
             best_individuals = population[:2]
