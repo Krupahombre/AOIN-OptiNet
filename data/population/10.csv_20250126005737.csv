@@ -1,0 +1,6 @@
+Max fitness Count,Generation Number,Epochs,Population Size,Selection Type,Tournament Size,Crossover Type,Crossover Probability,Mutation Type,Mutation Probability,Structure,Number of Layers,Input Layer,Output Layer,Train Time,Accuracy
+100,1,1,10,tournament,3,single_point,0.5,structure_change,0.2,"[62, 97, 32]",3,784,10,5.03,93.16
+100,2,1,10,tournament,3,single_point,0.5,structure_change,0.2,"[48, 65]",2,784,10,5.02,96.7
+100,3,1,10,tournament,3,single_point,0.5,structure_change,0.2,[65],1,784,10,5.06,97.1
+100,4,1,10,tournament,3,single_point,0.5,structure_change,0.2,[65],1,784,10,5.2,96.34
+100,5,1,10,tournament,3,single_point,0.5,structure_change,0.2,"[65, 58, 78, 17]",4,784,10,4.99,97.35
